@@ -26,7 +26,7 @@
             <a href="#dashboard">Dashboard</a>
         </nav>
 
-        <button class="login-btn">Login</button>
+        <button class="login-btn" onclick="showLogin()">Login</button>
 
     </header>
 
@@ -87,9 +87,8 @@
 
             <h3>Civic Impact</h3>
 
-            <div class="impact-number">
-                1,250
-            </div>
+            <div class="impact-number" 
+            id="civicImpactDisplay">0</div>
 
             <p>Your contribution is making a difference.</p>
 
@@ -365,7 +364,7 @@
             <div class="dashboard-card">
                 <span>⭐</span>
                 <small>Civic Points</small>
-                <strong>1,250</strong>
+                <strong id="civicPointsDisplay">0</strong>
                 <p>+120 this month</p>
             </div>
 
@@ -392,7 +391,12 @@
 
         </div>
 
-
+<div class="recent-reports">
+    <h3>📋 Recent Reports</h3>
+    <div id="reportsList">
+        <p>No reports yet.</p>
+    </div>
+</div>
         <div class="leaderboard">
 
             <div>
@@ -457,7 +461,7 @@
 
                 <div>
                     <small>Community Resolution Confidence</small>
-                    <strong>87%</strong>
+                    <strong class="confidence-value" id="confidenceValue">87%</strong>
                 </div>
 
                 <div class="confidence-bar">
@@ -537,6 +541,35 @@
 
 
     <script src="script.js"></script>
+<!-- LOGIN / SIGN UP MODAL -->
+<div id="loginModal" class="login-modal">
 
+    <div class="login-box">
+
+        <button class="close-login" onclick="closeLogin()">×</button>
+
+        <h2 id="loginTitle">Welcome to CivicPulse 🌐</h2>
+        <p id="loginSubtitle">Sign in to continue</p>
+
+        <div id="nameField" style="display:none;">
+            <input type="text" id="signupName" placeholder="Full Name">
+        </div>
+
+        <input type="email" id="loginEmail" placeholder="Email Address">
+
+        <input type="password" id="loginPassword" placeholder="Password">
+
+        <button class="login-submit" onclick="handleLogin()">
+            Sign In
+        </button>
+
+        <p class="switch-login">
+            Don't have an account?
+            <span onclick="showSignup()">Sign Up</span>
+        </p>
+
+    </div>
+
+</div>
 </body>
 </html>
