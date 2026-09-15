@@ -1,0 +1,549 @@
+/* =========================
+   BASIC PAGE STYLE
+   ========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #172033;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   HEADER
+   ========================= */
+
+header {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    padding: 18px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+nav a:hover {
+    opacity: 0.75;
+}
+
+
+/* =========================
+   HERO SECTION
+   ========================= */
+
+.hero {
+    min-height: 430px;
+    padding: 80px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    background:
+        linear-gradient(
+            rgba(30, 64, 175, 0.78),
+            rgba(124, 58, 237, 0.78)
+        ),
+        url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1600&q=80");
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content {
+    max-width: 850px;
+}
+
+.hero h1 {
+    font-size: clamp(32px, 5vw, 58px);
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 28px;
+}
+
+.hero-button {
+    display: inline-block;
+    background: white;
+    color: #4f46e5;
+    padding: 13px 26px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.hero-button:hover {
+    transform: translateY(-3px);
+}
+
+
+/* =========================
+   SECTIONS
+   ========================= */
+
+section {
+    padding: 60px 6%;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 35px;
+    color: #1e3a8a;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: #64748b;
+    margin: -20px auto 35px;
+    max-width: 700px;
+}
+
+
+/* =========================
+   CARDS
+   ========================= */
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 28px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+}
+
+.card h3 {
+    color: #1d4ed8;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #64748b;
+}
+
+
+/* =========================
+   ICONS
+   ========================= */
+
+.icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dbeafe;
+    color: #2563eb;
+    font-size: 25px;
+    margin-bottom: 18px;
+}
+
+
+/* =========================
+   BUTTONS
+   ========================= */
+
+button,
+.btn {
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+button:hover,
+.btn:hover {
+    background: #1d4ed8;
+}
+
+.btn-secondary {
+    background: #7c3aed;
+}
+
+.btn-success {
+    background: #16a34a;
+}
+
+
+/* =========================
+   FORM
+   ========================= */
+
+form {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.08);
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #334155;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    background: white;
+    color: #172033;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+
+/* =========================
+   MAP SECTION
+   ========================= */
+
+.map-section {
+    background: #eef4ff;
+}
+
+.map-container {
+    width: 100%;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.08);
+}
+
+
+/* Actual Leaflet map */
+
+#civic-map {
+    width: 100%;
+    height: 600px;
+    min-height: 600px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #dbeafe;
+}
+
+
+/* =========================
+   MAP LEGEND
+   ========================= */
+
+.map-legend {
+    background: white;
+    padding: 14px 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    color: #172033;
+    font-size: 13px;
+    line-height: 1.9;
+    min-width: 165px;
+}
+
+.map-legend h4 {
+    margin: 0 0 7px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #172033;
+}
+
+.legend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.legend-dot.high {
+    background: #ef4444;
+    border: 2px solid #991b1b;
+}
+
+.legend-dot.medium {
+    background: #f97316;
+    border: 2px solid #c2410c;
+}
+
+.legend-dot.low {
+    background: #22c55e;
+    border: 2px solid #166534;
+}
+
+
+/* =========================
+   STATUS BADGES
+   ========================= */
+
+.status {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status.pending {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.status.progress {
+    background: #ffedd5;
+    color: #c2410c;
+}
+
+.status.completed {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+
+/* =========================
+   PRIORITY BADGES
+   ========================= */
+
+.priority {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.priority.high {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.priority.medium {
+    background: #ffedd5;
+    color: #c2410c;
+}
+
+.priority.low {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+
+/* =========================
+   TABLE
+   ========================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.08);
+}
+
+th,
+td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+    background: #2563eb;
+    color: white;
+}
+
+td {
+    color: #475569;
+}
+
+
+/* =========================
+   FOOTER
+   ========================= */
+
+footer {
+    background: #172033;
+    color: white;
+    text-align: center;
+    padding: 25px 6%;
+    margin-top: 30px;
+}
+
+footer p {
+    color: #cbd5e1;
+}
+
+
+/* =========================
+   RESPONSIVE DESIGN
+   ========================= */
+
+@media (max-width: 768px) {
+
+    header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    nav {
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .hero {
+        padding: 60px 5%;
+        min-height: 380px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    section {
+        padding: 45px 5%;
+    }
+
+    .section-title {
+        font-size: 27px;
+    }
+
+    .map-container {
+        padding: 12px;
+    }
+
+    #civic-map {
+        height: 450px;
+        min-height: 450px;
+    }
+
+    .map-legend {
+        font-size: 12px;
+        min-width: 145px;
+        padding: 10px 12px;
+    }
+
+    form {
+        padding: 22px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .logo {
+        font-size: 21px;
+    }
+
+    nav a {
+        font-size: 13px;
+    }
+
+    .hero h1 {
+        font-size: 29px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    #civic-map {
+        height: 380px;
+        min-height: 380px;
+    }
+
+    .card {
+        padding: 22px;
+    }
+
+    .map-legend {
+        min-width: 130px;
+        font-size: 11px;
+    }
+}
