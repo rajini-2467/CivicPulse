@@ -1,575 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>CivicPulse | Your Voice. Your City.</title>
-
-    <link rel="stylesheet" href="style.css">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>CivicPulse</title>
+ <!-- Your existing CSS file -->
+ <link rel="stylesheet" href="style.css">
+ <!-- Leaflet CSS -->
+ <link
+ rel="stylesheet"
+ href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+ />
 </head>
-
 <body>
-
-    <!-- ================= NAVBAR ================= -->
-    <header class="navbar">
-
-        <div class="logo">
-            <span>◉</span> CivicPulse
-        </div>
-
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#report">Report</a>
-            <a href="#map">Civic Map</a>
-            <a href="#community">Community</a>
-            <a href="#dashboard">Dashboard</a>
-        </nav>
-
-        <button class="login-btn" onclick="showLogin()">Login</button>
-
-    </header>
-
-
-    <!-- ================= HERO ================= -->
-    <section class="hero" id="home">
-
-        <div class="hero-content">
-
-            <div class="hero-badge">
-                🌍 Together for a Better City
-            </div>
-
-            <h1>
-                Your Voice.<br>
-                <span>Your City.</span>
-            </h1>
-
-            <p>
-                Report local issues, track their progress, earn civic points,
-                and help make your community better.
-            </p>
-
-            <div class="hero-buttons">
-                <button class="primary-btn" onclick="showReport()">
-                    📍 Report an Issue
-                </button>
-
-                <button class="secondary-btn" onclick="scrollToMap()">
-                    🗺️ Explore Civic Map
-                </button>
-            </div>
-
-            <div class="hero-stats">
-
-                <div>
-                    <strong>2,481</strong>
-                    <small>Issues Reported</small>
-                </div>
-
-                <div>
-                    <strong>1,936</strong>
-                    <small>Issues Resolved</small>
-                </div>
-
-                <div>
-                    <strong>78%</strong>
-                    <small>Resolution Rate</small>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="hero-card">
-
-            <div class="floating-icon">🏆</div>
-
-            <h3>Civic Impact</h3>
-
-            <div class="impact-number" 
-            id="civicImpactDisplay">0</div>
-
-            <p>Your contribution is making a difference.</p>
-
-            <div class="progress">
-                <div class="progress-bar"></div>
-            </div>
-
-            <small>750 points to Community Guardian</small>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= CATEGORIES ================= -->
-    <section class="section" id="categories">
-
-        <div class="section-heading">
-            <span>QUICK REPORT</span>
-            <h2>What needs attention?</h2>
-            <p>Select a category and help us understand your city's needs.</p>
-        </div>
-
-        <div class="categories">
-
-            <div class="category-card" onclick="selectCategory('Roads')">
-                <div class="category-icon">🛣️</div>
-                <h3>Roads</h3>
-                <p>Potholes & damaged roads</p>
-            </div>
-
-            <div class="category-card" onclick="selectCategory('Garbage')">
-                <div class="category-icon">🗑️</div>
-                <h3>Garbage</h3>
-                <p>Waste & cleanliness</p>
-            </div>
-
-            <div class="category-card" onclick="selectCategory('Street Lights')">
-                <div class="category-icon">💡</div>
-                <h3>Street Lights</h3>
-                <p>Broken & dark streets</p>
-            </div>
-
-            <div class="category-card" onclick="selectCategory('Water')">
-                <div class="category-icon">🚰</div>
-                <h3>Water</h3>
-                <p>Supply & leakage</p>
-            </div>
-
-            <div class="category-card" onclick="selectCategory('Sanitation')">
-                <div class="category-icon">🚽</div>
-                <h3>Sanitation</h3>
-                <p>Public sanitation issues</p>
-            </div>
-
-            <div class="category-card" onclick="selectCategory('Public Spaces')">
-                <div class="category-icon">🌳</div>
-                <h3>Public Spaces</h3>
-                <p>Parks & public areas</p>
-            </div>
-
-            <div class="category-card" onclick="selectCategory('Traffic')">
-                <div class="category-icon">🚦</div>
-                <h3>Traffic</h3>
-                <p>Signals & congestion</p>
-            </div>
-
-            <div class="category-card" onclick="selectCategory('Other')">
-                <div class="category-icon">➕</div>
-                <h3>Other</h3>
-                <p>Something else?</p>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= REPORT ================= -->
-    <section class="report-section" id="report">
-
-        <div class="report-content">
-
-            <div>
-                <span class="section-label">SMART REPORTING</span>
-
-                <h2>
-                    Report an issue.<br>
-                    <span>We take it from there.</span>
-                </h2>
-
-                <p>
-                    Upload a photo, describe the problem and share its location.
-                    CivicPulse can help classify the issue, identify duplicates
-                    and determine its priority.
-                </p>
-
-                <div class="smart-features">
-
-                    <div>
-                        <b>🤖 AI Classification</b>
-                        <small>Understand the type of complaint</small>
-                    </div>
-
-                    <div>
-                        <b>🔍 Duplicate Detection</b>
-                        <small>Group reports about the same issue</small>
-                    </div>
-
-                    <div>
-                        <b>⚡ Smart Priority</b>
-                        <small>Identify issues with greater public impact</small>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="report-box">
-
-                <h3>📍 New Civic Report</h3>
-
-                <label>Issue Category</label>
-
-                <select id="issueCategory">
-                    <option>Select a category</option>
-                    <option>Roads & Potholes</option>
-                    <option>Garbage</option>
-                    <option>Street Lights</option>
-                    <option>Water Supply</option>
-                    <option>Sanitation</option>
-                    <option>Public Spaces</option>
-                    <option>Traffic</option>
-                    <option>Other</option>
-                </select>
-
-                <label>Description</label>
-
-                <textarea
-                    placeholder="Describe the issue..."
-                    rows="4">
-                </textarea>
-
-                <div class="upload-location">
-                    
-
-    <label class="photo-upload">
-        📷 Add Photo
-        <input
-            type="file"
-            id="issuePhoto"
-            accept="image/*"
-            hidden
-        >
-    </label>
-
-    <button onclick="getLocation()">
-        📍 Add Location
-    </button>
-
+ <!-- Your existing website -->
+</body>
+<body>
+<!-- ================= NAVBAR ================= -->
+ <header class="navbar">
+ <div class="logo">
+ <span>■</span> CivicPulse
+ </div>
+ <nav>
+ <a href="#home">Home</a>
+ <a href="#report">Report</a>
+ <a href="#map">Civic Map</a>
+ <a href="#community">Community</a>
+ <a href="#dashboard">Dashboard</a>
+ </nav>
+ <button class="login-btn" onclick="showLogin()">Login</button>
+ </header>
+ <!-- ================= HERO ================= -->
+ <section class="hero" id="home">
+ <div class="hero-content">
+ <div class="hero-badge">
+ ■ Together for a Better City
+ </div>
+ <h1>
+ Your Voice.<br>
+ <span>Your City.</span>
+ </h1>
+ <p>
+ Report local issues, track their progress, earn civic points,
+ and help make your community better.
+ </p>
+ <div class="hero-buttons">
+ <button class="primary-btn" onclick="showReport()">
+ ■ Report an Issue
+ </button>
+ <button class="secondary-btn" onclick="scrollToMap()">
+ ■■ Explore Civic Map
+ </button>
+ </div>
+ <div class="hero-stats">
+ <div>
+ <strong>2,481</strong>
+ <small>Issues Reported</small>
+ </div>
+ <div>
+ <strong>1,936</strong>
+ <small>Issues Resolved</small>
+ </div>
+ <div>
+ <strong>78%</strong>
+ <small>Resolution Rate</small>
+ </div>
+ </div>
+ </div>
+ <div class="hero-card">
+ <div class="floating-icon">■</div>
+ <h3>Civic Impact</h3>
+ <div class="impact-number"
+ id="civicImpactDisplay">0</div>
+ <p>Your contribution is making a difference.</p>
+ <div class="progress">
+ <div class="progress-bar"></div>
+ </div>
+ <small>750 points to Community Guardian</small>
+ </div>
+ </section>
+ <!-- ================= CATEGORIES ================= -->
+ <section class="section" id="categories">
+ <div class="section-heading">
+ <span>QUICK REPORT</span>
+ <h2>What needs attention?</h2>
+ <p>Select a category and help us understand your city's needs.</p>
+ </div>
+ <div class="categories">
+ <div class="category-card" onclick="selectCategory('Roads')">
+ <div class="category-icon">■■</div>
+ <h3>Roads</h3>
+ <p>Potholes & damaged roads</p>
+ </div>
+ <div class="category-card" onclick="selectCategory('Garbage')">
+ <div class="category-icon">■■</div>
+ <h3>Garbage</h3>
+ <p>Waste & cleanliness</p>
+ </div>
+ <div class="category-card" onclick="selectCategory('Street Lights')">
+ <div class="category-icon">■</div>
+ <h3>Street Lights</h3>
+ <p>Broken & dark streets</p>
+ </div>
+ <div class="category-card" onclick="selectCategory('Water')">
+ <div class="category-icon">■</div>
+ <h3>Water</h3>
+ <p>Supply & leakage</p>
+ </div>
+ <div class="category-card" onclick="selectCategory('Sanitation')">
+ <div class="category-icon">■</div>
+ <h3>Sanitation</h3>
+ <p>Public sanitation issues</p>
+ </div>
+ <div class="category-card" onclick="selectCategory('Public Spaces')">
+ <div class="category-icon">■</div>
+ <h3>Public Spaces</h3>
+ <p>Parks & public areas</p>
+ </div>
+ <div class="category-card" onclick="selectCategory('Traffic')">
+ <div class="category-icon">■</div>
+ <h3>Traffic</h3>
+ <p>Signals & congestion</p>
+ </div>
+ <div class="category-card" onclick="selectCategory('Other')">
+ <div class="category-icon">■</div>
+ <h3>Other</h3>
+ <p>Something else?</p>
+ </div>
+ </div>
+ </section>
+ <!-- ================= REPORT ================= -->
+ <section class="report-section" id="report">
+ <div class="report-content">
+ <div>
+ <span class="section-label">SMART REPORTING</span>
+ <h2>
+ Report an issue.<br>
+ <span>We take it from there.</span>
+ </h2>
+ <p>
+ Upload a photo, describe the problem and share its location.
+ CivicPulse can help classify the issue, identify duplicates
+ and determine its priority.
+ </p>
+ <div class="smart-features">
+ <div>
+ <b>■ AI Classification</b>
+ <small>Understand the type of complaint</small>
+ </div>
+ <div>
+ <b>■ Duplicate Detection</b>
+ <small>Group reports about the same issue</small>
+ </div>
+ <div>
+ <b>■ Smart Priority</b>
+ <small>Identify issues with greater public impact</small>
+ </div>
+ </div>
+ </div>
+ <div class="report-box">
+ <h3>■ New Civic Report</h3>
+ <label>Issue Category</label>
+ <select id="issueCategory">
+ <option>Select a category</option>
+ <option>Roads & Potholes</option>
+ <option>Garbage</option>
+ <option>Street Lights</option>
+ <option>Water Supply</option>
+ <option>Sanitation</option>
+ <option>Public Spaces</option>
+ <option>Traffic</option>
+ <option>Other</option>
+ </select>
+ <label>Description</label>
+ <textarea
+ placeholder="Describe the issue..."
+ rows="4">
+ </textarea>
+ <div class="upload-location">
+
+ <label class="photo-upload">
+ ■ Add Photo
+ <input
+ type="file"
+ id="issuePhoto"
+ accept="image/*"
+ hidden
+ >
+ </label>
+ <button onclick="getLocation()">
+ ■ Add Location
+ </button>
 </div>
-
 <p id="photoName"></p>
 
-                    
-                <button class="submit-btn" onclick="submitReport()">
-                    Submit Report →
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= CIVIC MAP ================= -->
-    <section class="section" id="map">
-
-        <div class="section-heading">
-
-            <span>LIVE CIVIC MAP</span>
-
-            <h2>See what's happening around you</h2>
-
-            <p>
-                Explore reported issues and identify civic hotspots.
-            </p>
-
-        </div>
-
-        <div class="map-container">
-
-            <div class="map-placeholder">
-
-                <div class="map-grid"></div>
-
-                <div class="map-marker marker-red">🗑️</div>
-                <div class="map-marker marker-orange">🛣️</div>
-                <div class="map-marker marker-green">💡</div>
-                <div class="map-marker marker-red marker-four">🚰</div>
-
-                <div class="map-center">
-                    📍
-                    <strong>Your Ward</strong>
-                    <small>12 active issues</small>
-                </div>
-
-            </div>
-
-            <div class="map-info">
-
-                <h3>Issue Hotspots</h3>
-
-                <div class="hotspot">
-                    <span class="dot red"></span>
-                    <div>
-                        <strong>Anna Nagar</strong>
-                        <small>18 active issues</small>
-                    </div>
-                </div>
-
-                <div class="hotspot">
-                    <span class="dot orange"></span>
-                    <div>
-                        <strong>Central Zone</strong>
-                        <small>11 active issues</small>
-                    </div>
-                </div>
-
-                <div class="hotspot">
-                    <span class="dot green"></span>
-                    <div>
-                        <strong>West Ward</strong>
-                        <small>5 active issues</small>
-                    </div>
-                </div>
-
-                <hr>
-
-                <p>
-                    🔴 High Priority<br>
-                    🟠 Medium Priority<br>
-                    🟢 Low Priority
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= CITIZEN DASHBOARD ================= -->
-    <section class="dashboard-section" id="dashboard">
-
-        <div class="section-heading">
-
-            <span>YOUR CIVIC JOURNEY</span>
-
-            <h2>Make an impact. Earn recognition.</h2>
-
-            <p>
-                Every meaningful contribution brings you closer to becoming
-                a Civic Champion.
-            </p>
-
-        </div>
-
-        <div class="dashboard-cards">
-
-            <div class="dashboard-card">
-                <span>⭐</span>
-                <small>Civic Points</small>
-                <strong id="civicPointsDisplay">0</strong>
-                <p>+120 this month</p>
-            </div>
-
-            <div class="dashboard-card">
-                <span>🏅</span>
-                <small>Badges Earned</small>
-                <strong>6</strong>
-                <p>2 more to unlock</p>
-            </div>
-
-            <div class="dashboard-card">
-                <span>🏆</span>
-                <small>Ward Rank</small>
-                <strong>#12</strong>
-                <p>↑ 4 positions</p>
-            </div>
-
-            <div class="dashboard-card">
-                <span>🛡️</span>
-                <small>Trust Score</small>
-                <strong>94%</strong>
-                <p>Highly trusted</p>
-            </div>
-
-        </div>
-
+ <button class="submit-btn" onclick="submitReport()">
+ Submit Report →
+ </button>
+ </div>
+ </div>
+ </section>
+ <!-- ================= CIVIC MAP ================= -->
+ <section class="section" id="map">
+ <div class="section-heading">
+ <span>LIVE CIVIC MAP</span>
+ <h2>See what's happening around you</h2>
+ <p>
+ Explore reported issues and identify civic hotspots.
+ </p>
+ </div>
+ <div class="map-container">
+ <div id="civic-map"></div>
+ <div class="map-info">
+ <h3>Issue Hotspots</h3>
+ <div class="hotspot">
+ <span class="dot red"></span>
+ <div>
+ <strong>Anna Nagar</strong>
+ <small>18 active issues</small>
+ </div>
+ </div>
+ <div class="hotspot">
+ <span class="dot orange"></span>
+ <div>
+ <strong>Central Zone</strong>
+ <small>11 active issues</small>
+ </div>
+ </div>
+ <div class="hotspot">
+ <span class="dot green"></span>
+ <div>
+ <strong>West Ward</strong>
+ <small>5 active issues</small>
+ </div>
+ </div>
+ <hr>
+ <p>
+ ■ High Priority<br>
+■ Medium Priority<br>
+■ Low Priority
+ </p>
+ </div>
+ </div>
+ </section>
+ <!-- ================= CITIZEN DASHBOARD ================= -->
+ <section class="dashboard-section" id="dashboard">
+ <div class="section-heading">
+ <span>YOUR CIVIC JOURNEY</span>
+ <h2>Make an impact. Earn recognition.</h2>
+ <p>
+ Every meaningful contribution brings you closer to becoming
+ a Civic Champion.
+ </p>
+ </div>
+ <div class="dashboard-cards">
+ <div class="dashboard-card">
+ <span>■</span>
+ <small>Civic Points</small>
+ <strong id="civicPointsDisplay">0</strong>
+ <p>+120 this month</p>
+ </div>
+ <div class="dashboard-card">
+ <span>■</span>
+ <small>Badges Earned</small>
+ <strong>6</strong>
+ <p>2 more to unlock</p>
+ </div>
+ <div class="dashboard-card">
+ <span>■</span>
+ <small>Ward Rank</small>
+ <strong>#12</strong>
+ <p>↑ 4 positions</p>
+ </div>
+ <div class="dashboard-card">
+ <span>■■</span>
+ <small>Trust Score</small>
+ <strong>94%</strong>
+ <p>Highly trusted</p>
+ </div>
+ </div>
 <div class="recent-reports">
-    <h3>📋 Recent Reports</h3>
-    <div id="reportsList">
-        <p>No reports yet.</p>
-    </div>
+ <h3>■ Recent Reports</h3>
+ <div id="reportsList">
+ <p>No reports yet.</p>
+ </div>
 </div>
-        <div class="leaderboard">
-
-            <div>
-                <span>🏆</span>
-                <h3>Community Leaderboard</h3>
-                <p>Citizens making a difference this month</p>
-            </div>
-
-            <div class="leader">
-                <b>🥇</b>
-                <span>Arun</span>
-                <strong>2,840 pts</strong>
-            </div>
-
-            <div class="leader">
-                <b>🥈</b>
-                <span>Meena</span>
-                <strong>2,510 pts</strong>
-            </div>
-
-            <div class="leader">
-                <b>🥉</b>
-                <span>You</span>
-                <strong>1,250 pts</strong>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= COMMUNITY VERIFICATION ================= -->
-    <section class="verification">
-
-        <div class="verification-content">
-
-            <div class="verification-icon">
-                🛡️
-            </div>
-
-            <span>OUR NEW FEATURE</span>
-
-            <h2>
-                Was it really fixed?
-            </h2>
-
-            <p>
-                When an issue is marked as resolved, the community gets
-                a chance to verify it. Your feedback helps ensure that
-                solutions actually work.
-            </p>
-
-            <div class="verification-options">
-
-                <button>✅ Fixed</button>
-                <button>🟡 Partially Fixed</button>
-                <button>❌ Still Exists</button>
-
-            </div>
-
-            <div class="confidence">
-
-                <div>
-                    <small>Community Resolution Confidence</small>
-                    <strong class="confidence-value" id="confidenceValue">87%</strong>
-                </div>
-
-                <div class="confidence-bar">
-                    <div></div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= MUNICIPALITY ================= -->
-    <section class="municipality">
-
-        <div class="section-heading">
-
-            <span>MUNICIPALITY COMMAND CENTER</span>
-
-            <h2>From complaints to action.</h2>
-
-            <p>
-                A unified view for authorities to prioritize,
-                assign and resolve civic issues.
-            </p>
-
-        </div>
-
-        <div class="municipality-cards">
-
-            <div>
-                <span>📂</span>
-                <strong>248</strong>
-                <small>Open Incidents</small>
-            </div>
-
-            <div>
-                <span>🚨</span>
-                <strong>32</strong>
-                <small>High Priority</small>
-            </div>
-
-            <div>
-                <span>⏱️</span>
-                <strong>2.4d</strong>
-                <small>Avg. Response</small>
-            </div>
-
-            <div>
-                <span>✅</span>
-                <strong>78%</strong>
-                <small>Resolution Rate</small>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= FOOTER ================= -->
-    <footer>
-
-        <div class="logo">
-            <span>◉</span> CivicPulse
-        </div>
-
-        <p>
-            Building better communities, one report at a time.
-        </p>
-
-        <p class="copyright">
-            © 2026 CivicPulse • Smart Civic Engagement Platform
-        </p>
-
-    </footer>
-
-
-    <script src="script.js"></script>
+ <div class="leaderboard">
+ <div>
+ <span>■</span>
+ <h3>Community Leaderboard</h3>
+ <p>Citizens making a difference this month</p>
+ </div>
+ <div class="leader">
+ <b>■</b>
+ <span>Arun</span>
+ <strong>2,840 pts</strong>
+ </div>
+ <div class="leader">
+ <b>■</b>
+ <span>Meena</span>
+ <strong>2,510 pts</strong>
+ </div>
+ <div class="leader">
+ <b>■</b>
+ <span>You</span>
+ <strong>1,250 pts</strong>
+ </div>
+ </div>
+ </section>
+ <!-- ================= COMMUNITY VERIFICATION ================= -->
+ <section class="verification">
+ <div class="verification-content">
+ <div class="verification-icon">
+ ■■
+ </div>
+ <span>OUR NEW FEATURE</span>
+ <h2>
+ Was it really fixed?
+ </h2>
+ <p>
+ When an issue is marked as resolved, the community gets
+ a chance to verify it. Your feedback helps ensure that
+ solutions actually work.
+ </p>
+ <div class="verification-options">
+ <button>■ Fixed</button>
+ <button>■ Partially Fixed</button>
+ <button>■ Still Exists</button>
+ </div>
+ <div class="confidence">
+ <div>
+ <small>Community Resolution Confidence</small>
+ <strong class="confidence-value" id="confidenceValue">87%</strong>
+ </div>
+ <div class="confidence-bar">
+ <div></div>
+ </div>
+ </div>
+ </div>
+ </section>
+ <!-- ================= MUNICIPALITY ================= -->
+ <section class="municipality">
+ <div class="section-heading">
+ <span>MUNICIPALITY COMMAND CENTER</span>
+ <h2>From complaints to action.</h2>
+ <p>
+ A unified view for authorities to prioritize,
+ assign and resolve civic issues.
+ </p>
+ </div>
+ <div class="municipality-cards">
+ <div>
+ <span>■</span>
+ <strong>248</strong>
+ <small>Open Incidents</small>
+ </div>
+ <div>
+ <span>■</span>
+ <strong>32</strong>
+ <small>High Priority</small>
+ </div>
+ <div>
+ <span>■■</span>
+ <strong>2.4d</strong>
+ <small>Avg. Response</small>
+ </div>
+ <div>
+ <span>■</span>
+ <strong>78%</strong>
+ <small>Resolution Rate</small>
+ </div>
+ </div>
+ </section>
+ <!-- ================= FOOTER ================= -->
+ <footer>
+ <div class="logo">
+ <span>■</span> CivicPulse
+ </div>
+ <p>
+ Building better communities, one report at a time.
+ </p>
+ <p class="copyright">
+ © 2026 CivicPulse • Smart Civic Engagement Platform
+ </p>
+ </footer>
 <!-- LOGIN / SIGN UP MODAL -->
 <div id="loginModal" class="login-modal">
-
-    <div class="login-box">
-
-        <button class="close-login" onclick="closeLogin()">×</button>
-
-        <h2 id="loginTitle">Welcome to CivicPulse 🌐</h2>
-        <p id="loginSubtitle">Sign in to continue</p>
-
-        <div id="nameField" style="display:none;">
-            <input type="text" id="signupName" placeholder="Full Name">
-        </div>
-
-        <input type="email" id="loginEmail" placeholder="Email Address">
-
-        <input type="password" id="loginPassword" placeholder="Password">
-
-        <button class="login-submit" onclick="handleLogin()">
-            Sign In
-        </button>
-
-        <p class="switch-login">
-            Don't have an account?
-            <span onclick="showSignup()">Sign Up</span>
-        </p>
-
-    </div>
-
+ <div class="login-box">
+ <button class="close-login" onclick="closeLogin()">×</button>
+ <h2 id="loginTitle">Welcome to CivicPulse ■</h2>
+ <p id="loginSubtitle">Sign in to continue</p>
+ <div id="nameField" style="display:none;">
+ <input type="text" id="signupName" placeholder="Full Name">
+ </div>
+ <input type="email" id="loginEmail" placeholder="Email Address">
+ <input type="password" id="loginPassword" placeholder="Password">
+ <button class="login-submit" onclick="handleLogin()">
+ Sign In
+ </button>
+ <p class="switch-login">
+ Don't have an account?
+ <span onclick="showSignup()">Sign Up</span>
+ </p>
+ </div>
 </div>
+ <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
