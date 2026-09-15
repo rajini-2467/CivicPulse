@@ -1,0 +1,2465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>CivicPulse - Municipality Command Center</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7f9;
+            color: #1f2937;
+        }
+
+        /* ================= LOGIN ================= */
+
+        #loginScreen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(
+                135deg,
+                #0f766e,
+                #134e4a
+            );
+            padding: 20px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .login-logo {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .login-box h1 {
+            color: #0f766e;
+            margin-bottom: 8px;
+        }
+
+        .login-box p {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #0f766e;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: #115e59;
+        }
+
+        .demo-note {
+            margin-top: 18px;
+            padding: 12px;
+            background: #f0fdfa;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #0f766e;
+        }
+
+
+        /* ================= DASHBOARD ================= */
+
+        #dashboard {
+            display: none;
+        }
+
+        .navbar {
+            background: #0f766e;
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .officer-badge {
+            background: rgba(255,255,255,0.15);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            border: 1px solid white;
+            background: transparent;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 30px auto;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+        }
+
+
+        /* ================= STATS ================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns:
+                repeat(5, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #0f766e;
+        }
+
+        .high-number {
+            color: #dc2626;
+        }
+
+        .duplicate-number {
+            color: #d97706;
+        }
+
+
+        /* ================= CONTROLS ================= */
+
+        .controls {
+            background: white;
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .controls input,
+        .controls select {
+            padding: 11px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            font-size: 14px;
+        }
+
+        .refresh-btn {
+            padding: 11px 18px;
+            background: #0f766e;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+
+        /* ================= INCIDENTS ================= */
+
+        .section-title {
+            font-size: 23px;
+            margin-bottom: 18px;
+        }
+
+        #incidentList {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .incident-card {
+            background: white;
+            border-radius: 17px;
+            padding: 22px;
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.06);
+            border-left: 5px solid #0f766e;
+        }
+
+        .incident-card.high {
+            border-left-color: #dc2626;
+        }
+
+        .incident-card.medium {
+            border-left-color: #d97706;
+        }
+
+        .incident-card.low {
+            border-left-color: #16a34a;
+        }
+
+        .incident-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .incident-id {
+            color: #0f766e;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .incident-category {
+            font-size: 21px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .priority-box {
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .priority-score {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .priority-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .incident-description {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .incident-details {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .detail {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .detail-label {
+            display: block;
+            font-size: 11px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+
+        /* ================= DUPLICATE ================= */
+
+        .duplicate-alert {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 18px;
+        }
+
+        .duplicate-title {
+            color: #c2410c;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .duplicate-list {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .duplicate-list li {
+            margin-bottom: 5px;
+        }
+
+
+        /* ================= ACTIONS ================= */
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 11px 15px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .confirm-btn {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .separate-btn {
+            background: #e0f2fe;
+            color: #075985;
+        }
+
+        .verify-btn {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .false-btn {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+
+
+        /* ================= EMPTY ================= */
+
+        .empty {
+            background: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 16px;
+            color: #6b7280;
+        }
+
+
+        /* ================= PRIORITY EXPLANATION ================= */
+
+        .priority-section {
+            margin-top: 35px;
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+        }
+
+        .priority-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(6, 1fr);
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .priority-factor {
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .factor-icon {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .factor-name {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+            .incident-details {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .priority-grid {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .incident-top {
+                flex-direction: column;
+            }
+
+            .incident-details {
+                grid-template-columns: 1fr;
+            }
+
+            .priority-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     OFFICER LOGIN
+===================================================== -->
+
+<div id="loginScreen">
+
+    <div class="login-box">
+
+        <div class="login-logo">
+            🏛️
+        </div>
+
+        <h1>CivicPulse</h1>
+
+        <p>
+            Municipality Command Center
+        </p>
+
+        <input
+            type="text"
+            id="officerId"
+            placeholder="Officer ID"
+        >
+
+        <input
+            type="password"
+            id="officerPassword"
+            placeholder="Password"
+        >
+
+        <button
+            class="login-btn"
+            onclick="officerLogin()"
+        >
+            🔐 Officer Login
+        </button>
+
+        <div class="demo-note">
+
+            Demo Login<br><br>
+
+            Officer ID:
+            <b>officer</b><br>
+
+            Password:
+            <b>civic123</b>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MUNICIPALITY DASHBOARD
+===================================================== -->
+
+<div id="dashboard">
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🏛️ CivicPulse
+        </div>
+
+        <div class="nav-right">
+
+            <span class="officer-badge">
+                👮 Officer Portal
+            </span>
+
+            <button
+                class="logout-btn"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+
+    <main class="container">
+
+
+        <!-- HEADER -->
+
+        <div class="page-header">
+
+            <h1>
+                Municipality Command Center
+            </h1>
+
+            <p>
+                Monitor, verify and prioritize
+                civic incidents.
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================= -->
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <h3>
+                    📋 Total Reports
+                </h3>
+
+                <div
+                    class="stat-number"
+                    id="totalReports"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    🚨 High Priority
+                </h3>
+
+                <div
+                    class="stat-number high-number"
+                    id="highPriority"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    🔁 Possible Duplicates
+                </h3>
+
+                <div
+                    class="stat-number duplicate-number"
+                    id="duplicateReports"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    ✅ Verified
+                </h3>
+
+                <div
+                    class="stat-number"
+                    id="verifiedReports"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    ⚠️ False Reports
+                </h3>
+
+                <div
+                    class="stat-number high-number"
+                    id="falseReports"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             FILTERS
+        ================================================= -->
+
+        <div class="controls">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="🔎 Search complaints..."
+                oninput="renderReports()"
+            >
+
+            <select
+                id="statusFilter"
+                onchange="renderReports()"
+            >
+
+                <option value="all">
+                    All Status
+                </option>
+
+                <option value="Submitted">
+                    Submitted
+                </option>
+
+                <option value="Possible Duplicate">
+                    Possible Duplicate
+                </option>
+
+                <option value="Officer Verified">
+                    Officer Verified
+                </option>
+
+                <option value="False Report">
+                    False Report
+                </option>
+
+                <option value="Separate Issue">
+                    Separate Issue
+                </option>
+
+            </select>
+
+
+            <select
+                id="priorityFilter"
+                onchange="renderReports()"
+            >
+
+                <option value="all">
+                    All Priority
+                </option>
+
+                <option value="high">
+                    High
+                </option>
+
+                <option value="medium">
+                    Medium
+                </option>
+
+                <option value="low">
+                    Low
+                </option>
+
+            </select>
+
+
+            <button
+                class="refresh-btn"
+                onclick="refreshDashboard()"
+            >
+                🔄 Refresh
+            </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             INCIDENT LIST
+        ================================================= -->
+
+        <h2 class="section-title">
+            🚨 Incident Management
+        </h2>
+
+        <div id="incidentList"></div>
+
+
+
+        <!-- =================================================
+             PRIORITY EXPLANATION
+        ================================================= -->
+
+        <section class="priority-section">
+
+            <h2>
+                🧠 Smart Priority Calculation
+            </h2>
+
+            <p style="color:#6b7280; margin-top:8px;">
+
+                Incident priority is independent
+                of citizen Civic Points.
+
+            </p>
+
+
+            <div class="priority-grid">
+
+                <div class="priority-factor">
+
+                    <div class="factor-icon">
+                        🚨
+                    </div>
+
+                    <div class="factor-name">
+                        Severity
+                    </div>
+
+                </div>
+
+
+                <div class="priority-factor">
+
+                    <div class="factor-icon">
+                        ⏱️
+                    </div>
+
+                    <div class="factor-name">
+                        Duration
+                    </div>
+
+                </div>
+
+
+                <div class="priority-factor">
+
+                    <div class="factor-icon">
+                        👥
+                    </div>
+
+                    <div class="factor-name">
+                        Public Impact
+                    </div>
+
+                </div>
+
+
+                <div class="priority-factor">
+
+                    <div class="factor-icon">
+                        🔁
+                    </div>
+
+                    <div class="factor-name">
+                        Duplicate Count
+                    </div>
+
+                </div>
+
+
+                <div class="priority-factor">
+
+                    <div class="factor-icon">
+                        ✅
+                    </div>
+
+                    <div class="factor-name">
+                        Confirmations
+                    </div>
+
+                </div>
+
+
+                <div class="priority-factor">
+
+                    <div class="factor-icon">
+                        📍
+                    </div>
+
+                    <div class="factor-name">
+                        Location
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   OFFICER LOGIN
+===================================================== */
+
+function officerLogin() {
+
+    const id =
+        document.getElementById("officerId").value.trim();
+
+    const password =
+        document.getElementById("officerPassword").value.trim();
+
+
+    if (
+        id === "officer" &&
+        password === "civic123"
+    ) {
+
+        sessionStorage.setItem(
+            "municipalityLogin",
+            "true"
+        );
+
+        document.getElementById(
+            "loginScreen"
+        ).style.display = "none";
+
+        document.getElementById(
+            "dashboard"
+        ).style.display = "block";
+
+        renderReports();
+
+    }
+
+    else {
+
+        alert(
+            "❌ Invalid Officer ID or Password."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout() {
+
+    sessionStorage.removeItem(
+        "municipalityLogin"
+    );
+
+    location.reload();
+
+}
+
+
+/* =====================================================
+   GET REPORTS
+===================================================== */
+
+function getReports() {
+
+    return JSON.parse(
+        localStorage.getItem("civicReports")
+    ) || [];
+
+}
+
+
+/* =====================================================
+   SAVE REPORTS
+===================================================== */
+
+function saveReports(reports) {
+
+    localStorage.setItem(
+        "civicReports",
+        JSON.stringify(reports)
+    );
+
+}
+
+
+/* =====================================================
+   TEXT NORMALIZATION
+===================================================== */
+
+function normalizeText(text) {
+
+    return String(text || "")
+        .toLowerCase()
+        .replace(/[^\w\s]/g, "")
+        .split(/\s+/)
+        .filter(
+            word => word.length > 2
+        );
+
+}
+
+
+/* =====================================================
+   TEXT SIMILARITY
+===================================================== */
+
+function textSimilarity(text1, text2) {
+
+    const words1 =
+        new Set(normalizeText(text1));
+
+    const words2 =
+        new Set(normalizeText(text2));
+
+
+    if (
+        words1.size === 0 ||
+        words2.size === 0
+    ) {
+
+        return 0;
+
+    }
+
+
+    let commonWords = 0;
+
+
+    words1.forEach(function(word) {
+
+        if (words2.has(word)) {
+
+            commonWords++;
+
+        }
+
+    });
+
+
+    const totalWords =
+        new Set([
+            ...words1,
+            ...words2
+        ]).size;
+
+
+    return commonWords / totalWords;
+
+}
+
+
+/* =====================================================
+   LOCATION DISTANCE
+===================================================== */
+
+function calculateDistance(
+    lat1,
+    lon1,
+    lat2,
+    lon2
+) {
+
+    if (
+        lat1 == null ||
+        lon1 == null ||
+        lat2 == null ||
+        lon2 == null
+    ) {
+
+        return 999999;
+
+    }
+
+
+    const R = 6371000;
+
+
+    const dLat =
+        (lat2 - lat1) *
+        Math.PI / 180;
+
+
+    const dLon =
+        (lon2 - lon1) *
+        Math.PI / 180;
+
+
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) ** 2;
+
+
+    const c =
+        2 *
+        Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+        );
+
+
+    return R * c;
+
+}
+
+
+/* =====================================================
+   FIND DUPLICATES
+===================================================== */
+
+function findDuplicates(
+    currentReport,
+    reports
+) {
+
+    return reports.filter(function(report) {
+
+        if (
+            report.id === currentReport.id
+        ) {
+
+            return false;
+
+        }
+
+
+        if (
+            report.status === "False Report"
+        ) {
+
+            return false;
+
+        }
+
+
+        if (
+            report.status === "Separate Issue"
+        ) {
+
+            return false;
+
+        }
+
+
+        if (
+            report.category !==
+            currentReport.category
+        ) {
+
+            return false;
+
+        }
+
+
+        const similarity =
+            textSimilarity(
+                currentReport.description,
+                report.description
+            );
+
+
+        const distance =
+            calculateDistance(
+                currentReport.latitude,
+                currentReport.longitude,
+                report.latitude,
+                report.longitude
+            );
+
+
+        return (
+            similarity >= 0.45 &&
+            distance <= 100
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   SEVERITY
+===================================================== */
+
+function calculateSeverity(text) {
+
+    text =
+        String(text || "").toLowerCase();
+
+
+    let score = 30;
+
+
+    const highWords = [
+
+        "accident",
+        "danger",
+        "dangerous",
+        "injury",
+        "fire",
+        "flood",
+        "overflow",
+        "blocked",
+        "emergency",
+        "shock",
+        "open manhole"
+
+    ];
+
+
+    const mediumWords = [
+
+        "broken",
+        "damaged",
+        "leak",
+        "leaking",
+        "problem"
+
+    ];
+
+
+    highWords.forEach(function(word) {
+
+        if (text.includes(word)) {
+
+            score += 10;
+
+        }
+
+    });
+
+
+    mediumWords.forEach(function(word) {
+
+        if (text.includes(word)) {
+
+            score += 5;
+
+        }
+
+    });
+
+
+    return Math.min(
+        score,
+        100
+    );
+
+}
+
+
+/* =====================================================
+   PUBLIC IMPACT
+===================================================== */
+
+function calculatePublicImpact(
+    text,
+    duplicateCount
+) {
+
+    text =
+        String(text || "").toLowerCase();
+
+
+    let score = 30;
+
+
+    const places = [
+
+        "school",
+        "hospital",
+        "college",
+        "bus stop",
+        "bus stand",
+        "railway",
+        "market",
+        "main road",
+        "highway",
+        "junction",
+        "park",
+        "public road"
+
+    ];
+
+
+    places.forEach(function(place) {
+
+        if (text.includes(place)) {
+
+            score += 7;
+
+        }
+
+    });
+
+
+    score += Math.min(
+        duplicateCount * 5,
+        30
+    );
+
+
+    return Math.min(
+        score,
+        100
+    );
+
+}
+
+
+/* =====================================================
+   LOCATION IMPORTANCE
+===================================================== */
+
+function calculateLocationImportance(text) {
+
+    text =
+        String(text || "").toLowerCase();
+
+
+    let score = 40;
+
+
+    const importantPlaces = [
+
+        "school",
+        "hospital",
+        "main road",
+        "highway",
+        "junction",
+        "bus stop",
+        "market",
+        "railway",
+        "college"
+
+    ];
+
+
+    importantPlaces.forEach(function(place) {
+
+        if (text.includes(place)) {
+
+            score += 10;
+
+        }
+
+    });
+
+
+    return Math.min(
+        score,
+        100
+    );
+
+}
+
+
+/* =====================================================
+   SMART PRIORITY
+===================================================== */
+/* =====================================================
+   SMART PRIORITY
+   Issue-based priority calculation
+===================================================== */
+
+function calculatePriority(report, duplicateCount) {
+
+    const category =
+        String(report.category || "").toLowerCase();
+
+    const text =
+        String(report.description || "").toLowerCase();
+
+
+    // =========================================
+    // 1. BASE PRIORITY BY ISSUE TYPE
+    // =========================================
+
+    let basePriority = 35;
+
+    if (
+        category.includes("traffic") ||
+        category.includes("road") ||
+        category.includes("pothole")
+    ) {
+        basePriority = 65;
+
+    } else if (
+        category.includes("water")
+    ) {
+        basePriority = 70;
+
+    } else if (
+        category.includes("sanitation") ||
+        category.includes("sewage")
+    ) {
+        basePriority = 60;
+
+    } else if (
+        category.includes("waste") ||
+        category.includes("garbage")
+    ) {
+        basePriority = 55;
+
+    } else if (
+        category.includes("street light") ||
+        category.includes("lighting")
+    ) {
+        basePriority = 50;
+
+    } else if (
+        category.includes("public space") ||
+        category.includes("park")
+    ) {
+        basePriority = 45;
+
+    } else {
+        basePriority = 35;
+    }
+
+
+    // =========================================
+    // 2. PUBLIC IMPACT
+    // =========================================
+
+    const publicImpact =
+        calculatePublicImpact(
+            text,
+            duplicateCount
+        );
+
+
+    // =========================================
+    // 3. DUPLICATE REPORTS
+    // =========================================
+
+    const duplicateScore =
+        Math.min(
+            100,
+            duplicateCount * 15
+        );
+
+
+    // =========================================
+    // 4. CITIZEN CONFIRMATIONS
+    // =========================================
+
+    const confirmationScore =
+        Math.min(
+            100,
+            (report.confirmations || 0) * 20
+        );
+
+
+    // =========================================
+    // 5. TIME
+    // =========================================
+
+    const reportTime =
+        new Date(
+            report.timestamp ||
+            report.date
+        ).getTime();
+
+    let ageHours = 0;
+
+    if (!isNaN(reportTime)) {
+
+        ageHours =
+            Math.max(
+                0,
+                (Date.now() - reportTime) /
+                (1000 * 60 * 60)
+            );
+
+    }
+
+    const timeScore =
+        Math.min(
+            100,
+            20 + ageHours * 3
+        );
+
+
+    // =========================================
+    // 6. LOCATION IMPORTANCE
+    // =========================================
+
+    const locationImportance =
+        calculateLocationImportance(
+            text
+        );
+
+
+    // =========================================
+    // FINAL SCORE
+    // =========================================
+
+    let priority =
+
+        basePriority * 0.45 +
+
+        publicImpact * 0.20 +
+
+        duplicateScore * 0.15 +
+
+        confirmationScore * 0.05 +
+
+        timeScore * 0.05 +
+
+        locationImportance * 0.10;
+
+
+    return Math.min(
+        100,
+        Math.round(priority)
+    );
+}
+/* =====================================================
+   PRIORITY CLASS
+===================================================== */
+
+function getPriorityClass(score) {
+
+    if (score >= 70) {
+
+        return "high";
+
+    }
+
+    if (score >= 40) {
+
+        return "medium";
+
+    }
+
+    return "low";
+
+}
+
+
+/* =====================================================
+   CONFIRM DUPLICATE
+===================================================== */
+
+function confirmDuplicate(
+    reportId,
+    duplicateId
+) {
+
+    const reports =
+        getReports();
+
+
+    const report =
+        reports.find(
+            r => r.id === reportId
+        );
+
+
+    const duplicate =
+        reports.find(
+            r => r.id === duplicateId
+        );
+
+
+    if (!report || !duplicate) {
+
+        return;
+
+    }
+
+
+    report.status =
+        "Merged Duplicate";
+
+
+    report.mergedInto =
+        duplicate.id;
+
+
+    duplicate.duplicateCount =
+        (duplicate.duplicateCount || 0) + 1;
+
+
+    saveReports(reports);
+
+
+    alert(
+        "🔁 Duplicate confirmed.\n\n" +
+        report.id +
+        " has been linked to incident " +
+        duplicate.id +
+        "."
+    );
+
+
+    renderReports();
+
+}
+
+
+/* =====================================================
+   MARK SEPARATE
+===================================================== */
+
+function markSeparate(
+    reportId
+) {
+
+    const reports =
+        getReports();
+
+
+    const report =
+        reports.find(
+            r => r.id === reportId
+        );
+
+
+    if (!report) {
+
+        return;
+
+    }
+
+
+    report.status =
+        "Separate Issue";
+
+
+    report.duplicateReviewed =
+        true;
+
+
+    saveReports(reports);
+
+
+    alert(
+        "✅ Reports marked as separate issues."
+    );
+
+
+    renderReports();
+
+}
+
+
+/* =====================================================
+   OFFICER VERIFY
+===================================================== */
+
+function officerVerify(
+    reportId
+) {
+
+    const reports =
+        getReports();
+
+
+    const report =
+        reports.find(
+            r => r.id === reportId
+        );
+
+
+    if (!report) {
+
+        return;
+
+    }
+
+
+    report.status =
+        "Officer Verified";
+
+
+    report.confirmed =
+        true;
+
+
+    report.confirmations =
+        Math.max(
+            report.confirmations || 0,
+            1
+        );
+
+
+    saveReports(reports);
+
+
+    alert(
+        "✅ Report verified by officer.\n\n" +
+        "Citizen points can now be awarded according to the verification rules."
+    );
+
+
+    renderReports();
+
+}
+
+
+/* =====================================================
+   MARK FALSE REPORT
+===================================================== */
+
+function markFalseReport(
+    reportId
+) {
+
+    const reports =
+        getReports();
+
+
+    const report =
+        reports.find(
+            r => r.id === reportId
+        );
+
+
+    if (!report) {
+
+        return;
+
+    }
+
+
+    const confirmation =
+        confirm(
+            "Are you sure this is a false report?"
+        );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    report.status =
+        "False Report";
+
+
+    report.falseReport =
+        true;
+
+
+    report.reputationChange =
+        -100;
+
+
+    saveReports(reports);
+
+
+    alert(
+        "⚠️ Report marked as false.\n\n" +
+        "Citizen reputation penalty recorded."
+    );
+
+
+    renderReports();
+
+}
+
+
+/* =====================================================
+   RENDER REPORTS
+===================================================== */
+
+function renderReports() {
+
+    const reports =
+        getReports();
+
+
+    const list =
+        document.getElementById(
+            "incidentList"
+        );
+
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value.toLowerCase();
+
+
+    const statusFilter =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    const priorityFilter =
+        document.getElementById(
+            "priorityFilter"
+        ).value;
+
+
+    /* Recalculate duplicate counts */
+
+    reports.forEach(function(report) {
+
+        if (
+            report.status ===
+            "Merged Duplicate"
+        ) {
+
+            return;
+
+        }
+
+
+        const duplicates =
+            findDuplicates(
+                report,
+                reports
+            );
+
+
+        report.duplicateCount =
+            duplicates.length;
+
+
+        report.priority =
+            calculatePriority(
+                report,
+                duplicates.length
+            );
+
+    });
+
+
+    saveReports(reports);
+
+
+    /* Filter */
+
+    const filtered =
+        reports.filter(function(report) {
+
+            const searchable =
+                (
+                    report.id +
+                    " " +
+                    report.category +
+                    " " +
+                    report.description +
+                    " " +
+                    report.department
+                ).toLowerCase();
+
+
+            const matchesSearch =
+                searchable.includes(search);
+
+
+            const matchesStatus =
+                statusFilter === "all" ||
+                report.status === statusFilter;
+
+
+            const priority =
+                getPriorityClass(
+                    report.priority || 0
+                );
+
+
+            const matchesPriority =
+                priorityFilter === "all" ||
+                priority === priorityFilter;
+
+
+            return (
+                matchesSearch &&
+                matchesStatus &&
+                matchesPriority
+            );
+
+        });
+
+
+    /* Sort highest priority first */
+
+    filtered.sort(
+        (a, b) =>
+            (b.priority || 0) -
+            (a.priority || 0)
+    );
+
+
+    /* Empty */
+
+    if (filtered.length === 0) {
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                <div style="font-size:40px;">
+                    📭
+                </div>
+
+                <h3>
+                    No incidents found
+                </h3>
+
+                <p style="margin-top:8px;">
+                    Submitted citizen complaints
+                    will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+        updateStats(reports);
+
+        return;
+
+    }
+
+
+    list.innerHTML = "";
+
+
+    filtered.forEach(function(report) {
+
+        const duplicates =
+            findDuplicates(
+                report,
+                reports
+            );
+
+
+        const priority =
+            report.priority || 0;
+
+
+        const priorityClass =
+            getPriorityClass(priority);
+
+
+        let duplicateHTML = "";
+
+
+        if (
+            duplicates.length > 0 &&
+            report.status !==
+            "Merged Duplicate" &&
+            report.status !==
+            "Separate Issue"
+        ) {
+
+            duplicateHTML = `
+
+                <div class="duplicate-alert">
+
+                    <div class="duplicate-title">
+
+                        🔁 Possible Duplicate Detected
+
+                    </div>
+
+                    <div>
+
+                        This complaint appears similar
+                        to nearby complaint(s).
+
+                    </div>
+
+                    <ul class="duplicate-list">
+
+                        ${duplicates.map(
+                            duplicate => `
+
+                            <li>
+
+                                <b>
+                                    ${duplicate.id}
+                                </b>
+
+                                —
+                                ${duplicate.description}
+
+                                <br>
+
+                                <small>
+                                    📍 Same/nearby location
+                                </small>
+
+                                <br>
+
+                                <button
+                                    class="action-btn confirm-btn"
+                                    onclick="
+                                    confirmDuplicate(
+                                        '${report.id}',
+                                        '${duplicate.id}'
+                                    )"
+                                >
+                                    🔁 Confirm Duplicate
+                                </button>
+
+                            </li>
+
+                        `).join("")}
+
+                    </ul>
+
+                </div>
+
+            `;
+
+        }
+
+
+        const locationText =
+            report.latitude &&
+            report.longitude
+
+            ? `${Number(report.latitude).toFixed(5)},
+               ${Number(report.longitude).toFixed(5)}`
+
+            : "Location not provided";
+
+
+        const dateText =
+            report.date ||
+            (
+                report.timestamp
+                    ? new Date(
+                        report.timestamp
+                    ).toLocaleString()
+                    : "Unknown"
+            );
+
+
+        const status =
+            report.status ||
+            "Submitted";
+
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            `incident-card ${priorityClass}`;
+
+
+        card.innerHTML = `
+
+            <div class="incident-top">
+
+                <div>
+
+                    <div class="incident-id">
+
+                        ${report.id}
+
+                    </div>
+
+                    <div class="incident-category">
+
+                        ${report.category}
+
+                    </div>
+
+                </div>
+
+
+                <div class="priority-box">
+
+                    <div
+                        class="priority-score"
+                        style="
+                        color:
+                        ${
+                            priority >= 70
+                                ? "#dc2626"
+                                : priority >= 40
+                                ? "#d97706"
+                                : "#16a34a"
+                        };
+                        "
+                    >
+
+                        ${priority}
+
+                    </div>
+
+                    <div class="priority-label">
+
+                        Priority / 100
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+           <div class="incident-description">
+
+    ${escapeHTML(
+        report.description
+    )}
+
+</div>
+
+${
+    report.photo
+        ? `
+            <div style="
+                margin-bottom: 18px;
+                background: #f8fafc;
+                padding: 15px;
+                border-radius: 12px;
+            ">
+
+                <strong>
+                    📷 Citizen Uploaded Photo
+                </strong>
+
+                <br><br>
+
+                <img
+                    src="${report.photo}"
+                    alt="Citizen uploaded evidence"
+                    style="
+                        width: 300px;
+                        max-height: 250px;
+                        object-fit: cover;
+                        border-radius: 10px;
+                        border: 1px solid #ddd;
+                        cursor: pointer;
+                    "
+                    onclick="window.open(this.src, '_blank')"
+                >
+
+            </div>
+        `
+        : `
+            <div style="
+                margin-bottom: 18px;
+                color: #777;
+            ">
+                📷 No photo uploaded
+            </div>
+        `
+}
+
+
+            ${duplicateHTML}
+
+
+            <div class="incident-details">
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        🏢 Department
+                    </span>
+
+                    <span class="detail-value">
+                        ${report.department || "Municipality"}
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        📍 Location
+                    </span>
+
+                    <span class="detail-value">
+                        ${locationText}
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        🔁 Related Reports
+                    </span>
+
+                    <span class="detail-value">
+                        ${report.duplicateCount || 0}
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        👥 Confirmations
+                    </span>
+
+                    <span class="detail-value">
+                        ${report.confirmations || 0}
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        📅 Submitted
+                    </span>
+
+                    <span class="detail-value">
+                        ${dateText}
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        📌 Status
+                    </span>
+
+                    <span class="detail-value">
+                        ${status}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+
+                ${
+                    status !==
+                    "Officer Verified"
+
+                    ? `
+
+                    <button
+                        class="action-btn verify-btn"
+                        onclick="
+                        officerVerify(
+                            '${report.id}'
+                        )
+                        "
+                    >
+                        👮 Verify Report
+                    </button>
+
+                    `
+                    : ""
+                }
+
+
+                ${
+                    duplicates.length > 0 &&
+                    status !==
+                    "Separate Issue"
+
+                    ? `
+
+                    <button
+                        class="action-btn separate-btn"
+                        onclick="
+                        markSeparate(
+                            '${report.id}'
+                        )
+                        "
+                    >
+                        ↔️ Separate Issue
+                    </button>
+
+                    `
+                    : ""
+                }
+
+
+                ${
+                    status !==
+                    "False Report"
+
+                    ? `
+
+                    <button
+                        class="action-btn false-btn"
+                        onclick="
+                        markFalseReport(
+                            '${report.id}'
+                        )
+                        "
+                    >
+                        ⚠️ False Report
+                    </button>
+
+                    `
+                    : ""
+                }
+
+            </div>
+
+        `;
+
+
+        list.appendChild(card);
+
+    });
+
+
+    updateStats(reports);
+
+}
+
+
+/* =====================================================
+   UPDATE STATISTICS
+===================================================== */
+
+function updateStats(
+    reports
+) {
+
+    document.getElementById(
+        "totalReports"
+    ).textContent =
+        reports.length;
+
+
+    document.getElementById(
+        "highPriority"
+    ).textContent =
+
+        reports.filter(
+            report =>
+                (report.priority || 0) >= 70 &&
+                report.status !==
+                "False Report"
+        ).length;
+
+
+    document.getElementById(
+        "duplicateReports"
+    ).textContent =
+
+        reports.filter(
+            report =>
+                (report.duplicateCount || 0) > 0 &&
+                report.status !==
+                "Merged Duplicate"
+        ).length;
+
+
+    document.getElementById(
+        "verifiedReports"
+    ).textContent =
+
+        reports.filter(
+            report =>
+                report.status ===
+                "Officer Verified"
+        ).length;
+
+
+    document.getElementById(
+        "falseReports"
+    ).textContent =
+
+        reports.filter(
+            report =>
+                report.status ===
+                "False Report"
+        ).length;
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text || "";
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   REFRESH
+===================================================== */
+
+function refreshDashboard() {
+
+    renderReports();
+
+}
+
+
+/* =====================================================
+   CHECK LOGIN
+===================================================== */
+
+function checkLogin() {
+
+    const loggedIn =
+        sessionStorage.getItem(
+            "municipalityLogin"
+        );
+
+
+    if (loggedIn === "true") {
+
+        document.getElementById(
+            "loginScreen"
+        ).style.display = "none";
+
+        document.getElementById(
+            "dashboard"
+        ).style.display = "block";
+
+        renderReports();
+
+    }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+checkLogin();
+
+
+</script>
+
+</body>
+
+</html>

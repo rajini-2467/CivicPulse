@@ -63,8 +63,16 @@ function getLocation() {
 
         function(position) {
 
+
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
+            localStorage.setItem(
+    "lastLocation",
+    JSON.stringify({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+    })
+);
 
             alert(
                 "📍 Location captured successfully!\n\n" +
@@ -85,7 +93,7 @@ function getLocation() {
 
 // ---------- SUBMIT REPORT ----------
 
-function submitReport() {
+async function submitReport() {
 
     const category =
         document.getElementById("issueCategory").value;
@@ -170,18 +178,56 @@ if (
 
     const reportId =
         "CP-" + reportNumber;
+    const savedLocation =
+       JSON.parse(localStorage.getItem("lastLocation")) || {};
+    const photoInput =
+       document.getElementById("issuePhoto");
+
+let photoData = null;
+
+if (
+    photoInput &&
+    photoInput.files &&
+    photoInput.files.length > 0
+) {
+    photoData =
+        await readPhotoAsDataURL(
+            photoInput.files[0]
+        );
+}
+
+    const latitude =
+       savedLocation.latitude || null;
+
+    const longitude =
+       savedLocation.longitude || null;  
         // Save report in browser
-const report = {
+
+    const report = {
     id: reportId,
     category: category,
     priority: priority,
-department: department,
+    department: department,
     description: description,
+
+    latitude: latitude,
+    longitude: longitude,
+    photo: photoData,
     status: "Submitted",
     date: new Date().toLocaleString()
 };
 
 const reports = JSON.parse(localStorage.getItem("civicReports")) || [];
+// Check for duplicate complaints
+const duplicates = findDuplicateReports(report, reports);
+
+if (duplicates.length > 0) {
+    report.status = "Possible Duplicate";
+    report.duplicateCount = duplicates.length;
+    report.duplicateOf = duplicates[0].id;
+} else {
+    report.duplicateCount = 0;
+}
 
 reports.push(report);
 
@@ -294,14 +340,37 @@ function displayRecentReports() {
 
     reports.slice().reverse().slice(0, 5).forEach(function(report) {
         const reportItem = document.createElement("div");
+    reportItem.innerHTML = `
+    <strong>${report.id}</strong>
 
-        reportItem.innerHTML = `
-            <strong>${report.id}</strong>
-            <span>${report.category}</span>
-            <p>${report.description}</p>
-            <small>Priority: ${report.priority || "Medium"}</small>
+    <span>${report.category}</span>
+
+    <p>${report.description}</p>
+
+    ${
+        report.photo
+            ? `
+                <img
+                    src="${report.photo}"
+                    alt="Uploaded issue photo"
+                    style="
+                        width: 220px;
+                        height: 160px;
+                        object-fit: cover;
+                        border-radius: 10px;
+                        margin: 10px 0;
+                        cursor: pointer;
+                    "
+                    onclick="window.open(this.src, '_blank')"
+                >
+            `
+            : ""
+    }
+
+    <small>Priority: ${report.priority || "Medium"}</small>
+
     <small>Department: ${report.department || "Municipality"}</small>
-        `;
+`;
 
         reportsList.appendChild(reportItem);
     });
@@ -386,4 +455,186 @@ function handleLogin() {
 
     alert("✅ Welcome to CivicPulse!");
     closeLogin();
+}
+// ================= CIVICPULSE POINTS =================
+
+function getCivicPoints() {
+    return Number(localStorage.getItem("civicPoints")) || 0;
+}
+
+function setCivicPoints(points) {
+    localStorage.setItem(
+        "civicPoints",
+        Math.max(0, Math.round(points))
+    );
+
+    updateCivicPointsDisplay();
+}
+
+function updateCivicPointsDisplay() {
+
+    const points = getCivicPoints();
+
+    const pointsDisplay =
+        document.getElementById("civicPointsDisplay");
+
+    const impactDisplay =
+        document.getElementById("civicImpactDisplay");
+
+    if (pointsDisplay) {
+        pointsDisplay.textContent = points;
+    }
+
+    if (impactDisplay) {
+        impactDisplay.textContent = points;
+    }
+}
+
+updateCivicPointsDisplay();
+updateCivicPointsDisplay();
+
+// ================= DUPLICATE COMPLAINT DETECTION =================
+
+function normalizeText(text) {
+    return text
+        .toLowerCase()
+        .replace(/[^\w\s]/g, "")
+        .split(/\s+/)
+        .filter(word => word.length > 2);
+}
+
+function textSimilarity(text1, text2) {
+
+    const words1 = new Set(normalizeText(text1));
+    const words2 = new Set(normalizeText(text2));
+
+    if (words1.size === 0 || words2.size === 0) {
+        return 0;
+    }
+
+    let commonWords = 0;
+
+    words1.forEach(function(word) {
+        if (words2.has(word)) {
+            commonWords++;
+        }
+    });
+
+    const totalWords =
+        new Set([...words1, ...words2]).size;
+
+    return commonWords / totalWords;
+}
+// ================= FIND DUPLICATE REPORTS =================
+
+function findDuplicateReports(newReport, reports) {
+
+    return reports.filter(function(report) {
+
+        // Ignore false reports
+        if (report.status === "False Report") {
+            return false;
+        }
+
+        // Category must match
+        if (report.category !== newReport.category) {
+            return false;
+        }
+
+        // Location must be available
+        if (
+            !newReport.latitude ||
+            !newReport.longitude ||
+            !report.latitude ||
+            !report.longitude
+        ) {
+            return false;
+        }
+
+        // Check location distance
+        const distance = calculateDistance(
+            newReport.latitude,
+            newReport.longitude,
+            report.latitude,
+            report.longitude
+        );
+
+        // Same area: within 100 metres
+        if (distance > 100) {
+            return false;
+        }
+
+        // Complaint must also be similar
+        const similarity = textSimilarity(
+            newReport.description,
+            report.description
+        );
+
+        // Same/very similar complaint + same location
+        return similarity >= 0.45;
+    });
+}
+// ================= LOCATION DISTANCE =================
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+
+    const R = 6371000; // Earth radius in metres
+
+    const dLat =
+        (lat2 - lat1) * Math.PI / 180;
+
+    const dLon =
+        (lon2 - lon1) * Math.PI / 180;
+
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) ** 2;
+
+    const c =
+        2 * Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+        );
+
+    return R * c;
+}
+// ================= PHOTO STORAGE =================
+
+function readPhotoAsDataURL(file) {
+
+    return new Promise(function(resolve, reject) {
+
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            resolve(reader.result);
+        };
+
+        reader.onerror = function() {
+            reject(reader.error);
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
+// ================= PHOTO STORAGE =================
+
+function readPhotoAsDataURL(file) {
+
+    return new Promise(function(resolve, reject) {
+
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            resolve(reader.result);
+        };
+
+        reader.onerror = function() {
+            reject(reader.error);
+        };
+
+        reader.readAsDataURL(file);
+    });
 }
