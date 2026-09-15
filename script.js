@@ -232,6 +232,30 @@ if (duplicates.length > 0) {
 reports.push(report);
 
 localStorage.setItem("civicReports", JSON.stringify(reports));
+try {
+    const backendResponse = await fetch("http://127.0.0.1:8001/reports", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            category: aiCategory,
+            description: description,
+            priority: priority,
+            department: department,
+            latitude: latitude || 0,
+            longitude: longitude || 0,
+            photo: photoData
+        })
+    });
+
+    const backendData = await backendResponse.json();
+
+    console.log("Report saved to backend:", backendData);
+
+} catch (error) {
+    console.error("Backend connection failed:", error);
+}
 // Add civic points
 let civicPoints = Number(localStorage.getItem("civicPoints")) || 0;
 

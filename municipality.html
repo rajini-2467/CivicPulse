@@ -975,6 +975,30 @@ function getReports() {
     ) || [];
 
 }
+async function loadBackendReports() {
+    try {
+        const response = await fetch("http://127.0.0.1:8001/reports");
+
+        if (!response.ok) {
+            throw new Error("Failed to load reports");
+        }
+
+        const backendReports = await response.json();
+
+        // Update municipality dashboard data
+        localStorage.setItem(
+            "civicReports",
+            JSON.stringify(backendReports)
+        );
+
+        console.log("✅ Municipality loaded reports from backend:", backendReports);
+
+        renderReports();
+
+    } catch (error) {
+        console.error("❌ Could not load backend reports:", error);
+    }
+}
 
 
 /* =====================================================
@@ -2415,10 +2439,9 @@ function escapeHTML(text) {
    REFRESH
 ===================================================== */
 
-function refreshDashboard() {
-
+async function refreshDashboard() {
+    await loadBackendReports();
     renderReports();
-
 }
 
 
@@ -2456,6 +2479,7 @@ function checkLogin() {
 ===================================================== */
 
 checkLogin();
+loadBackendReports();
 
 
 </script>
